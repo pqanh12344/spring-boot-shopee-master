@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{backend/layout.html}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+<div class="container-fluid" layout:fragment="content">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Category</h3>
+                </div>
+                <!-- /.card-header -->
+                <div class="card-body">
+                    <table class="table table-bordered">
+                        <thead>
+                        <tr>
+                            <th style="width: 10px">#</th>
+                            <th>Name</th>
+                            <th>Parent</th>
+                            <th>Operation</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="category: ${categories}">
+                            <td th:text="${category.getId()}"></td>
+                            <td th:text="${category.getName()}"></td>
+                            <th>
+                                <span th:if="${category.getParent()==null}">No Parent</span>
+                                <span th:if="${category.getParent()!=null}"
+                                      th:text="${category.getParent().getName()}">Male</span>
+                            </th>
+                            <th>
+                                <a th:href="@{/admin/category/edit(id=${category.getId()})}">Edit</a>
+                                <a th:href="@{/admin/category/delete(id=${category.getId()})}"
+                                   onclick="return confirm('Are you sure want to delete it?')">
+                                    Delete
+                                </a>
+                            </th>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <!-- /.card-body -->
+                <div class="card-footer clearfix">
+                    <ul class="pagination pagination-sm m-0 float-right">
+                        <li
+                                th:each="pageNumber:${#numbers.sequence(1, totalPage)}"
+                                th:attr="class=${currentPage==pageNumber ? 'active page-item' : 'page-item'}"
+                                th:if="${pageNumber>0}">
+                            <a class="page-link" th:href="@{/admin/user/list(page=${pageNumber},offset=${offset})}"
+                               th:text="${pageNumber}"
+                            ></a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
